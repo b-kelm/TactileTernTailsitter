@@ -178,17 +178,17 @@ float GyroErrorZ = -0.42;
 //Controller parameters (take note of defaults before modifying!): 
 float i_limit = 25.0;     //Integrator saturation level, mostly for safety (default 25.0)
 float maxRoll = 50.0;     //Max roll angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode 
-float maxPitch = 50.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
-float maxYaw = 220.0;     //Max yaw rate in deg/sec
+float maxPitch = 35.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
+float maxYaw = 120.0;     //Max yaw rate in deg/sec
 
-float Kp_roll_angle = 0.2;    //Roll P-gain - angle mode 
-float Ki_roll_angle = 0.3;    //Roll I-gain - angle mode
-float Kd_roll_angle = 0.05;   //Roll D-gain - angle mode (has no effect on controlANGLE2)
-float B_loop_roll = 0.9;      //Roll damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
-float Kp_pitch_angle = 0.2;   //Pitch P-gain - angle mode
-float Ki_pitch_angle = 0.3;   //Pitch I-gain - angle mode
-float Kd_pitch_angle = 0.05;  //Pitch D-gain - angle mode (has no effect on controlANGLE2)
-float B_loop_pitch = 0.9;     //Pitch damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
+float Kp_roll_angle = 0.15;    //Roll P-gain - angle mode 
+float Ki_roll_angle = 0.23;    //Roll I-gain - angle mode
+float Kd_roll_angle = 0.04;   //Roll D-gain - angle mode (has no effect on controlANGLE2)
+float B_loop_roll = 0.8;      //Roll damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
+float Kp_pitch_angle = 0.15;   //Pitch P-gain - angle mode
+float Ki_pitch_angle = 0.23;   //Pitch I-gain - angle mode
+float Kd_pitch_angle = 0.04;  //Pitch D-gain - angle mode (has no effect on controlANGLE2)
+float B_loop_pitch = 0.8;     //Pitch damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
 
 float Kp_roll_rate = 0.15;    //Roll P-gain - rate mode
 float Ki_roll_rate = 0.2;     //Roll I-gain - rate mode
@@ -301,7 +301,7 @@ bool armedFly = false;
 
 // Tailsitter stuff and additons
 float transition_fader = 1.0; // 1.0 is hover, 0.0 is forward flight
-float faderate = 3.0; // seconds to go from max bounds 0 to 1, TUNE
+float faderate = 2.0; // seconds to go from max bounds 0 to 1, TUNE
 // control gains
 // hover
 float kp_pitch_angle_hover = 1.17;
@@ -324,7 +324,7 @@ float servo_right_trim = 0.49;
 float servo_left_trim = 0.45;
 
 float ff_roll_yaw_mix_amount = 30; // in forward flight, a roll commands some yaw for coordinated turns
-float ff_pitch_trim = 10; // pitch trim angle in degrees to command in forward flight
+float ff_pitch_trim = 9; // pitch trim angle in degrees to command in forward flight
 
 
 
@@ -424,11 +424,11 @@ void loop() {
 
   //Print data at 100hz (uncomment one at a time for troubleshooting) - SELECT ONE:
   //printRadioData();     //Prints radio pwm values (expected: 1000 to 2000)
-  printDesiredState();  //Prints desired vehicle state commanded in either degrees or deg/sec (expected: +/- maxAXIS for roll, pitch, yaw; 0 to 1 for throttle)
+  //printDesiredState();  //Prints desired vehicle state commanded in either degrees or deg/sec (expected: +/- maxAXIS for roll, pitch, yaw; 0 to 1 for throttle)
   //printGyroData();      //Prints filtered gyro data direct from IMU (expected: ~ -250 to 250, 0 at rest)
   //printAccelData();     //Prints filtered accelerometer data direct from IMU (expected: ~ -2 to 2; x,y 0 when level, z 1 when level)
   //printMagData();       //Prints filtered magnetometer data direct from IMU (expected: ~ -300 to 300)
-  //printRollPitchYaw();  //Prints roll, pitch, and yaw angles in degrees from Madgwick filter (expected: degrees, 0 when level)
+  printRollPitchYaw();  //Prints roll, pitch, and yaw angles in degrees from Madgwick filter (expected: degrees, 0 when level)
   //printPIDoutput();     //Prints computed stabilized PID variables from controller and desired setpoint (expected: ~ -1 to 1)
   //printMotorCommands(); //Prints the values being written to the motors (expected: 120 to 250)
   //printServoCommands(); //Prints the values being written to the servos (expected: 0 to 180)
