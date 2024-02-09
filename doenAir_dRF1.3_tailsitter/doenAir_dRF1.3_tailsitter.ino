@@ -167,27 +167,42 @@ float MagScaleY = 1.0;
 float MagScaleZ = 1.0;
 
 //IMU calibration parameters - calibrate IMU using calculate_IMU_error() in the void setup() to get these values, then comment out calculate_IMU_error()
+// Level Calibration on 09.02.2024
+float AccErrorX = -0.14;
+float AccErrorY = 0.02;
+float AccErrorZ = -0.00;
+float GyroErrorX = -1.40;
+float GyroErrorY = -0.48;
+float GyroErrorZ = -0.38;
+
+
+/* Level Calibration
 float AccErrorX = -0.04;
 float AccErrorY = 0.02;
 float AccErrorZ = 0.01;
 float GyroErrorX = -1.42;
 float GyroErrorY = -0.48;
 float GyroErrorZ = -0.42;
-
+*/
 
 //Controller parameters (take note of defaults before modifying!): 
-float i_limit = 25.0;     //Integrator saturation level, mostly for safety (default 25.0)
-float maxRoll = 50.0;     //Max roll angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode 
-float maxPitch = 35.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
+float i_limit = 15.0;     //Integrator saturation level, mostly for safety (default 25.0)
+float maxRoll = 30.0;     //Max roll angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode 
+float maxPitch = 25.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
 float maxYaw = 120.0;     //Max yaw rate in deg/sec
 
 float Kp_roll_angle = 0.15;    //Roll P-gain - angle mode 
 float Ki_roll_angle = 0.23;    //Roll I-gain - angle mode
 float Kd_roll_angle = 0.04;   //Roll D-gain - angle mode (has no effect on controlANGLE2)
 float B_loop_roll = 0.8;      //Roll damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
+
+// Pitch Tuning on 08.02.2024
+// * High Gains (X2 Kp = 0.3) give more instable behavior (slow oscillations...)
+// * Too low gains also problematic... 
+// Try Ziegler Einstellregeln!
 float Kp_pitch_angle = 0.15;   //Pitch P-gain - angle mode
 float Ki_pitch_angle = 0.23;   //Pitch I-gain - angle mode
-float Kd_pitch_angle = 0.04;  //Pitch D-gain - angle mode (has no effect on controlANGLE2)
+float Kd_pitch_angle = 0.03;  //Pitch D-gain - angle mode (has no effect on controlANGLE2)
 float B_loop_pitch = 0.8;     //Pitch damping term for controlANGLE2(), lower is more damping (must be between 0 to 1)
 
 float Kp_roll_rate = 0.15;    //Roll P-gain - rate mode
@@ -310,21 +325,24 @@ float kp_roll_angle_hover =  0.36;
 float kd_roll_angle_hover = 0.07;
 float kp_yaw_hover = 0.45;
 float kd_yaw_hover = 0.0003;
+
 // forward flight
 float kp_pitch_angle_ff = 0.25;
 float kd_pitch_angle_ff = 0.05;
 float kff_pitch_angle_ff = 0.3;
 float kp_roll_angle_ff = 0.5;
 float kd_roll_angle_ff = 0.06;
+
 float kp_yaw_ff = 0.2;
 float kd_yaw_ff = 0.00017;
 
 // servo trims // BK: Trims!
-float servo_right_trim = 0.49;
-float servo_left_trim = 0.45;
+float servo_right_trim = 0.44;
+float servo_left_trim = 0.48;
 
 float ff_roll_yaw_mix_amount = 30; // in forward flight, a roll commands some yaw for coordinated turns
-float ff_pitch_trim = 9; // pitch trim angle in degrees to command in forward flight
+float ff_pitch_hover = 15; // BK Offset for Hover Flight 
+float ff_pitch_trim = 0; // pitch trim angle in degrees to command in forward flight
 
 
 
@@ -1018,7 +1036,7 @@ void getDesState() {
   yaw_passthru = constrain(yaw_passthru, -0.5, 0.5);
 
   yaw_des = (1.0 - transition_fader)*(yaw_des - ff_roll_yaw_mix_amount * roll_des/maxRoll) + (transition_fader)*(yaw_des); // ff + hover
-  pitch_des = (1.0 - transition_fader)*(pitch_des - ff_pitch_trim) + (transition_fader)*(pitch_des); // ff + hover
+  pitch_des = (1.0 - transition_fader)*(pitch_des - ff_pitch_trim) + (transition_fader)*(pitch_des+ ff_pitch_hover); // ff + hover
 
 }
 
