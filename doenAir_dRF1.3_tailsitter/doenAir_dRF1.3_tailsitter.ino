@@ -42,15 +42,15 @@ static const uint8_t num_DSM_channels = 6; //If using DSM RX, change this to mat
 //#define USE_MPU9250_SPI
 
 //Uncomment only one full scale gyro range (deg/sec)
-#define GYRO_250DPS //Default
+//#define GYRO_250DPS //Default
 //#define GYRO_500DPS
-//#define GYRO_1000DPS
+#define GYRO_1000DPS
 //#define GYRO_2000DPS
 
 //Uncomment only one full scale accelerometer range (G's)
-#define ACCEL_2G //Default
+//#define ACCEL_2G //Default
 //#define ACCEL_4G
-//#define ACCEL_8G
+#define ACCEL_8G
 //#define ACCEL_16G
 
 
@@ -167,6 +167,7 @@ float MagScaleY = 1.0;
 float MagScaleZ = 1.0;
 
 //IMU calibration parameters - calibrate IMU using calculate_IMU_error() in the void setup() to get these values, then comment out calculate_IMU_error()
+
 // Level Calibration on 09.02.2024
 float AccErrorX = -0.14;
 float AccErrorY = 0.02;
@@ -186,9 +187,9 @@ float GyroErrorZ = -0.42;
 */
 
 //Controller parameters (take note of defaults before modifying!): 
-float i_limit = 15.0;     //Integrator saturation level, mostly for safety (default 25.0)
-float maxRoll = 30.0;     //Max roll angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode 
-float maxPitch = 25.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
+float i_limit = 25.0;     //Integrator saturation level, mostly for safety (default 25.0)
+float maxRoll = 40.0;     //Max roll angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode 
+float maxPitch = 35.0;    //Max pitch angle in degrees for angle mode (maximum ~70 degrees), deg/sec for rate mode
 float maxYaw = 120.0;     //Max yaw rate in deg/sec
 
 float Kp_roll_angle = 0.15;    //Roll P-gain - angle mode 
@@ -328,19 +329,27 @@ float kd_yaw_hover = 0.0003;
 
 // forward flight
 float kp_pitch_angle_ff = 0.25;
+float kd_pitch_angle_ff = 0.06;
+float kff_pitch_angle_ff = 0.4;
+float kp_roll_angle_ff = 0.5;
+float kd_roll_angle_ff = 0.06;
+
+/* Values from 11.02.2024
+ * float kp_pitch_angle_ff = 0.15;
 float kd_pitch_angle_ff = 0.05;
 float kff_pitch_angle_ff = 0.3;
 float kp_roll_angle_ff = 0.5;
 float kd_roll_angle_ff = 0.06;
+ */
 
 float kp_yaw_ff = 0.2;
 float kd_yaw_ff = 0.00017;
 
 // servo trims // BK: Trims!
-float servo_right_trim = 0.44;
+float servo_right_trim = 0.45;
 float servo_left_trim = 0.48;
 
-float ff_roll_yaw_mix_amount = 30; // in forward flight, a roll commands some yaw for coordinated turns
+float ff_roll_yaw_mix_amount = 50; // in forward flight, a roll commands some yaw for coordinated turns // BK: was 30 before
 float ff_pitch_hover = 15; // BK Offset for Hover Flight 
 float ff_pitch_trim = 0; // pitch trim angle in degrees to command in forward flight
 
