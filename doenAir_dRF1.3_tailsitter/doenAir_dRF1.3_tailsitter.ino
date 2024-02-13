@@ -320,19 +320,37 @@ float transition_fader = 1.0; // 1.0 is hover, 0.0 is forward flight
 float faderate = 2.0; // seconds to go from max bounds 0 to 1, TUNE
 // control gains
 // hover
+float kp_pitch_angle_hover = 1.17*1.25;
+float kd_pitch_angle_hover = 0.09*1.25;
+float kp_roll_angle_hover =  0.36;
+float kd_roll_angle_hover = 0.07;
+float kp_yaw_hover = 0.45;
+float kd_yaw_hover = 0.0003;
+
+/*/ hover - 13.02.2024 - indoor is fine, still funky on pitch
 float kp_pitch_angle_hover = 1.17;
 float kd_pitch_angle_hover = 0.09;
 float kp_roll_angle_hover =  0.36;
 float kd_roll_angle_hover = 0.07;
 float kp_yaw_hover = 0.45;
 float kd_yaw_hover = 0.0003;
+*/
+
 
 // forward flight
 float kp_pitch_angle_ff = 0.25;
 float kd_pitch_angle_ff = 0.06;
 float kff_pitch_angle_ff = 0.4;
+float kp_roll_angle_ff = 0.65;
+float kd_roll_angle_ff = 0.07;
+
+/* Values from 13.02.2024 - full transition cycle worked, 
+ * float kp_pitch_angle_ff = 0.25;
+float kd_pitch_angle_ff = 0.06;
+float kff_pitch_angle_ff = 0.4;
 float kp_roll_angle_ff = 0.5;
 float kd_roll_angle_ff = 0.06;
+ */
 
 /* Values from 11.02.2024
  * float kp_pitch_angle_ff = 0.15;
@@ -349,7 +367,7 @@ float kd_yaw_ff = 0.00017;
 float servo_right_trim = 0.45;
 float servo_left_trim = 0.48;
 
-float ff_roll_yaw_mix_amount = 50; // in forward flight, a roll commands some yaw for coordinated turns // BK: was 30 before
+float ff_roll_yaw_mix_amount = 60; // in forward flight, a roll commands some yaw for coordinated turns // BK: was 30 originally
 float ff_pitch_hover = 15; // BK Offset for Hover Flight 
 float ff_pitch_trim = 0; // pitch trim angle in degrees to command in forward flight
 
